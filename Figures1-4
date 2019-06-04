@@ -1,0 +1,178 @@
+  install.packages("qqman")
+  install.packages("RCurl")                  
+
+  library(qqman)
+  require(RCurl)
+ 
+  pheno <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_phenotype.csv"),header=T)
+  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_genotype1.csv"),row.names=1)   
+  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_genotype2.csv"),row.names=1)
+  geno <- rbind(geno1,geno2)
+  geno <- t(geno)
+
+  pca <- read.csv("pca.csv",header=T)
+  pca.lbl <- pca$NSFTV.ID
+
+  pc11 <- pca$PC1[match(pheno[,2],pca$NSFTV.ID)]
+  pc22 <- pca$PC2[match(pheno[,2],pca$NSFTV.ID)]
+  pc33 <- pca$PC3[match(pheno[,2],pca$NSFTV.ID)]
+  pc44 <- pca$PC4[match(pheno[,2],pca$NSFTV.ID)]
+
+  pc111 <- NULL
+  pc222 <- NULL
+  pc333 <- NULL
+  pc444 <- NULL
+
+  p_val2 <- NULL
+  p_val3 <- NULL
+  corr   <- NULL
+  for (i in 1:dim(geno)[2]){
+    snp <- as.numeric(as.factor(geno[,i]))
+    snp <- snp[which(snp!=1)]
+    pc1 <- pc11[which(snp!=1)]
+    pc2 <- pc22[which(snp!=1)]
+    pc3 <- pc33[which(snp!=1)]
+    pc4 <- pc44[which(snp!=1)]
+
+    if ( length(unique(snp)) == 1 ) { next }
+    for (k in 1:length(unique(snp))){
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
+    }
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
+
+    phn <- pheno$Seed.length[which(snp!=1)]
+    res <- lm(phn ~ 1 + as.factor(snp) + pc1 + pc2 + pc3 + pc4)
+
+    pc111[i] <- summary(res)[[4]][3,1]
+    pc222[i] <- summary(res)[[4]][4,1]
+    pc333[i] <- summary(res)[[4]][5,1]
+    pc444[i] <- summary(res)[[4]][6,1]
+
+    p_val3  <- phn - summary(res)[[4]][3,4]*pc1 - summary(res)[[4]][4,4]*pc2 - summary(res)[[4]][5,4]*pc3 - summary(res)[[4]][6,4]*pc4     
+    corr[i] <- cor(phn[which(is.na(phn) == F)],p_val3[which(is.na(phn) == F)])
+  }
+  
+  
+#### Figure 1
+
+  par(mfrow=c(4,1))
+  par(mar=c(4,4,2,1))   
+  plot(pc111[which(!is.na(pc111))],type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
+  plot(pc111[which(!is.na(pc222))],type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
+  plot(pc111[which(!is.na(pc333))],type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
+  plot(pc111[which(!is.na(pc444))],type="l",xlab="",ylab="Coefficient for PCA4",main="Estimated coefficients for PCA4 variable")      
+      
+
+#### Figure 2
+  
+  plot(corr[which(!is.na(corr))],pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
+
+
+#### Figure 3
+#### Figure 3A 
+
+  snp   <- NULL
+  phn   <- NULL
+  p_val1 <- NULL
+  for (i in 1:dim(geno)[2]){
+    snp <- as.numeric(as.factor(geno[,i]))
+    snp <- snp[which(snp!=1)]
+    if ( length(unique(snp)) == 1 ) { next }
+    for (k in 1:length(unique(snp))){
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
+    }
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
+    phn <- pheno$Seed.length[which(snp!=1)]  
+
+    res <- lm(phn ~ 1 + snp)
+    p_val1[i] <- summary(res)[[4]][2,4]
+  }
+#  plot(-log10(p_val1)[!is.na(p_val1)],pch=20)
+  
+  plot(-log10(p_val1)[!is.na(p_val1)],pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 3.688)",cex.main=1.4)
+
+#### Figure 3B 
+
+  qq(p_val1[!is.na(p_val1)])
+
+
+#### Figure 3C 
+
+  pvalues <- p_val1[!is.na(p_val1)]
+  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
+  lambda <- median(chisq)/qchisq(0.5,1)
+  newchisq <- chisq/lambda
+  newpvalues1 <- pchisq(newchisq, df=1,lower.tail=FALSE)
+  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.000)",cex.main=1.4)
+
+#### Figure 3D 
+
+  qq(newpvalues1)
+
+#### Figure 3E
+
+  pheno <- read.csv("rice_phenotype.csv",header=T)
+  geno  <- read.csv("rice_genotype.csv",row.names=1)
+  geno  <- t(geno)
+ 
+  pca <- read.csv("pca.csv",header=T)
+  pca.lbl <- pca$NSFTV.ID
+
+  pc11 <- pca$PC1[match(pheno[,2],pca$NSFTV.ID)]
+  pc22 <- pca$PC2[match(pheno[,2],pca$NSFTV.ID)]
+  pc33 <- pca$PC3[match(pheno[,2],pca$NSFTV.ID)]
+  pc44 <- pca$PC4[match(pheno[,2],pca$NSFTV.ID)]
+
+  pc111 <- NULL
+  pc222 <- NULL
+  pc333 <- NULL
+  pc444 <- NULL
+
+  p_val2 <- NULL
+  p_val3 <- NULL
+  for (i in 1:dim(geno)[2]){
+    snp <- as.numeric(as.factor(geno[,i]))
+    snp <- snp[which(snp!=1)]
+    pc1 <- pc11[which(snp!=1)]
+    pc2 <- pc22[which(snp!=1)]
+    pc3 <- pc33[which(snp!=1)]
+    pc4 <- pc44[which(snp!=1)]
+
+    if ( length(unique(snp)) == 1 ) { next }
+    for (k in 1:length(unique(snp))){
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
+    }
+      if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
+
+    phn <- pheno$Seed.length[which(snp!=1)]
+    res <- lm(phn ~ 1 + as.factor(snp) + pc1 + pc2 + pc3 + pc4)
+
+    pc111[i] <- summary(res)[[4]][3,1]
+    pc222[i] <- summary(res)[[4]][4,1]
+    pc333[i] <- summary(res)[[4]][5,1]
+    pc444[i] <- summary(res)[[4]][6,1]
+
+    p_val2[i] <- summary(res)[[4]][2,4]
+  }
+  plot(-log10(p_val2)[!is.na(p_val2)],pch=20,xlab="",ylab="-log10(P value)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + PCA4 + e (Genomic inflation factor = 1.433)",cex.main=1.4)
+
+#### Figure 3F
+
+  qq(p_val2[!is.na(p_val2)])
+
+#### Figure 3G
+
+  pvalues <- p_val2[!is.na(p_val2)]
+  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
+  lambda <- median(chisq)/qchisq(0.5,1)
+  newchisq <- chisq/lambda
+  newpvalues2 <- pchisq(newchisq, df=1,lower.tail=FALSE)
+  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P value)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + PCA4 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
+  
+#### Figure 3H 
+  qq(newpvalues2)
+
+
+#### Figure 4
+  plot(-log10(newpvalues1),-log10(newpvalues2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
+
