@@ -10,7 +10,8 @@
   geno <- rbind(geno1,geno2)
   geno <- t(geno)
 
-  pca <- read.csv("pca.csv",header=T)
+  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/pca.csv"),row.names=1)
+
   pca.lbl <- pca$NSFTV.ID
 
   pc11 <- pca$PC1[match(pheno[,2],pca$NSFTV.ID)]
