@@ -10,8 +10,10 @@
   geno <- rbind(geno1,geno2)
   geno <- t(geno)
 
+  pca  <- NULL
   pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/pca.csv"),row.names=1)
 
+  pca.lbl <- NULL
   pca.lbl <- pca$NSFTV.ID
 
   pc11 <- NULL
