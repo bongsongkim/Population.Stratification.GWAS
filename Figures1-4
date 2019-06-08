@@ -11,7 +11,7 @@
   geno <- t(geno)
 
   pca  <- NULL
-  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),row.names=1)
+  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
 
   pca.lbl <- NULL
   pca.lbl <- pca$NSFTV.ID
