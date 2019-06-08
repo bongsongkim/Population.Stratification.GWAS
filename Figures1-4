@@ -42,15 +42,12 @@
     pc4 <- pc44[which(geno[,i] != 0)]
 
   if ( length(geno[,i]) == 1 ) { next }
-
-
     for (k in 1:length(unique(geno[,i]))){
 #   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
     }
 #   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-
 
     phn <- pheno$Seed.length[which(geno[,i] != 0)]
     res <- lm(phn ~ 1 + as.factor(geno[which(geno[,i] != 0),i]) + pc1 + pc2 + pc3 + pc4)
@@ -63,8 +60,7 @@
     adj.phn <- phn - summary(res)[[4]][3,4]*pc1 - summary(res)[[4]][4,4]*pc2 - summary(res)[[4]][5,4]*pc3 - summary(res)[[4]][6,4]*pc4     
     corr[i] <- cor(phn[which(is.na(phn) == F)],adj.phn[which(is.na(phn) == F)])
   }
-  
-  
+    
 #### Figure 1
 
   par(mfrow=c(4,1))
@@ -74,11 +70,9 @@
   plot(pc111[which(!is.na(pc333))],type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
   plot(pc111[which(!is.na(pc444))],type="l",xlab="",ylab="Coefficient for PCA4",main="Estimated coefficients for PCA4 variable")      
       
-
 #### Figure 2
   
   plot(corr[which(!is.na(corr))],pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
-
 
 #### Figure 3
 #### Figure 3A 
@@ -95,14 +89,12 @@
 
   if ( length(geno[,i]) == 1 ) { next }
 
-
     for (k in 1:length(unique(geno[,i]))){
 #   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
     }
 #   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-
 
     phn <- pheno$Seed.length[which(geno[,i] != 0)]
     res <- lm(phn ~ 1 + as.factor(geno[which(geno[,i] != 0),i]) + pc1 + pc2 + pc3 + pc4)
@@ -115,7 +107,6 @@
     adj.phn <- phn - summary(res)[[4]][3,4]*pc1 - summary(res)[[4]][4,4]*pc2 - summary(res)[[4]][5,4]*pc3 - summary(res)[[4]][6,4]*pc4     
     corr[i] <- cor(phn[which(is.na(phn) == F)],adj.phn[which(is.na(phn) == F)])
   }
-  
   
 #### Figure 3
 #### Figure 3A 
@@ -185,7 +176,6 @@
     p_val2[i] <- summary(res)[[4]][2,4]
   }
 plot(-log10(p_val2)[which(!is.na(p_val2))],cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + PCA4 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
-
 
 #### Figure 3F
 
