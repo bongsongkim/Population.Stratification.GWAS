@@ -35,11 +35,11 @@
   corr   <- NULL
   for (i in 1:dim(geno)[2]){
     snp <- as.numeric(as.factor(geno[,i]))
-    snp <- snp[which(snp!=1)]
-    pc1 <- pc11[which(snp!=1)]
-    pc2 <- pc22[which(snp!=1)]
-    pc3 <- pc33[which(snp!=1)]
-    pc4 <- pc44[which(snp!=1)]
+    snp <- snp[which(snp!=0)]
+    pc1 <- pc11[which(snp!=0)]
+    pc2 <- pc22[which(snp!=0)]
+    pc3 <- pc33[which(snp!=0)]
+    pc4 <- pc44[which(snp!=0)]
 
     if ( length(unique(snp)) == 1 ) { next }
     for (k in 1:length(unique(snp))){
