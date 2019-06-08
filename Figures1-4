@@ -4,14 +4,14 @@
   library(qqman)
   require(RCurl)
  
-  pheno <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_phenotype.csv"),header=T)
-  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_genotype1.csv"),row.names=1)   
-  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/rice_genotype2.csv"),row.names=1)
+  pheno <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
+  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_genotype1.csv"),row.names=1)   
+  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_genotype2.csv"),row.names=1)
   geno <- rbind(geno1,geno2)
   geno <- t(geno)
 
   pca  <- NULL
-  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Stratification.GWAS/master/Data/pca.csv"),row.names=1)
+  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),row.names=1)
 
   pca.lbl <- NULL
   pca.lbl <- pca$NSFTV.ID
