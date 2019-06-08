@@ -32,7 +32,6 @@
   pc444 <- NULL
 
   p_val2 <- NULL
-  p_val3 <- NULL
   corr   <- NULL
   for (i in 1:dim(geno)[2]){
     snp <- as.numeric(as.factor(geno[,i]))
