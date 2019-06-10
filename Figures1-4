@@ -104,7 +104,7 @@
     pc333[i] <- summary(res)[[4]][5,1]
     pc444[i] <- summary(res)[[4]][6,1]
 
-    adj.phn <- phn - summary(res)[[4]][3,4]*pc1 - summary(res)[[4]][4,4]*pc2 - summary(res)[[4]][5,4]*pc3 - summary(res)[[4]][6,4]*pc4     
+    adj.phn <- phn - summary(res)[[4]][3,1]*pc1 - summary(res)[[4]][4,1]*pc2 - summary(res)[[4]][5,1]*pc3 - summary(res)[[4]][6,1]*pc4     
     corr[i] <- cor(phn[which(is.na(phn) == F)],adj.phn[which(is.na(phn) == F)])
   }
   
