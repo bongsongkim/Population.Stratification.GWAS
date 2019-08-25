@@ -74,10 +74,8 @@
   if ( length(geno[,i]) == 1 ) { next }
 
     for (k in 1:length(unique(geno[,i]))){
-#   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ break }
-    if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
+       if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
     }
-#   if (length(which(snp == unique(snp)[k]))/length(snp) <0.1){ next }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
 
     phn <- pheno$Seed.length[which(geno[,i] != 0)]
