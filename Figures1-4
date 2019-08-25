@@ -60,7 +60,7 @@
       
 #### Figure 2
   
-  plot(corr[which(!is.na(corr))],pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
+  plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
 
 #### Figure 3
 #### Figure 3A 
