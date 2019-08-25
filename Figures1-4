@@ -23,6 +23,10 @@
   pc1 <- pheno$PC1
   pc2 <- pheno$PC2
   pc3 <- pheno$PC3
+ 
+  pc11 <- NULL
+  pc22 <- NULL
+  pc33 <- NULL
 
   phn <- pheno$SHL
   cnt <- 0
