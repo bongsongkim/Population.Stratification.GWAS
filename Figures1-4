@@ -57,36 +57,35 @@
   plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
 
 #### Figure 2
-
   plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
 
 #### Figure 3
 #### Figure 3A 
 
-  phn   <- NULL
+  phn    <- NULL
   p_val1 <- NULL  
-  
+  cnt    <- 0
   for (i in 1:dim(geno)[2]){
-  if ( length(geno[,i]) == 1 ) { next }
-
-
     for (k in 1:length(unique(geno[,i]))){
-    if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
+      if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
     }
     if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-
-      phn <- pheno$Seed.length[which(geno[,i] != 0)]
-
-    res <- lm(phn ~ 1 + as.factor(geno[which(geno[,i] != 0),i]))
-    p_val1[i] <- summary(res)[[4]][2,4]
+      
+      cnt <- cnt + 1
+      phn <- pheno$SHL
+      res <- lm(phn ~ 1 + pheno$Rep + geno[,i] + pheno$PC1 + pheno$PC2 + pheno$PC3 )
+      p_val1[cnt] <- summary(res)[[4]][3,4]
   }
-#  plot(-log10(p_val1)[!is.na(p_val1)],pch=20)
-  
-  plot(-log10(p_val1)[!is.na(p_val1)],pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 3.688)",cex.main=1.4)
+  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 3.688)",cex.main=1.4)
 
 #### Figure 3B 
 
-  qq(p_val1[!is.na(p_val1)])
+  qq(p_val1)
+  
+  
+  
+  
+  
 
 #### Figure 3C 
 
