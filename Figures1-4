@@ -48,8 +48,6 @@
       corr[cnt] <- cor(phn, adj.phn)
   }
   
-  
-  
 #### Figure 1
 
   par(mfrow=c(3,1))
@@ -58,13 +56,9 @@
   plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
   plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
 
-
-
 #### Figure 2
-  
+
   plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
-
-
 
 #### Figure 3
 #### Figure 3A 
