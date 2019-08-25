@@ -27,7 +27,7 @@
   phn <- pheno$SHL
   cnt <- 0
 
-  for (i in 1:100){ # dim(geno)[2]){
+  for (i in 1:dim(geno)[2]){
       for (k in 1:length(unique(geno[,i]))){
          if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
       }
