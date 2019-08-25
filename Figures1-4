@@ -52,12 +52,11 @@
   
 #### Figure 1
 
-  par(mfrow=c(4,1))
+  par(mfrow=c(3,1))
   par(mar=c(4,4,2,1))   
-  plot(pc111[which(!is.na(pc111))],type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
-  plot(pc111[which(!is.na(pc222))],type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
-  plot(pc111[which(!is.na(pc333))],type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
-  plot(pc111[which(!is.na(pc444))],type="l",xlab="",ylab="Coefficient for PCA4",main="Estimated coefficients for PCA4 variable")      
+  plot(pc11,type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
+  plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
+  plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
       
 #### Figure 2
   
