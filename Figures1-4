@@ -44,7 +44,9 @@
       cnt <- cnt + 1
       corr[cnt] <- cor(phn, adj.phn)
   }
-    
+  
+  
+  
 #### Figure 1
 
   par(mfrow=c(4,1))
