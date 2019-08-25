@@ -57,43 +57,15 @@
   plot(pc11,type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
   plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
   plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
-      
+
+
+
 #### Figure 2
   
   plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
 
-#### Figure 3
-#### Figure 3A 
 
-  snp   <- NULL
-  phn   <- NULL
-  p_val1 <- NULL
- 
-  for (i in 1:dim(geno)[2]){
-    pc1 <- pc11[which(geno[,i] != 0)]
-    pc2 <- pc22[which(geno[,i] != 0)]
-    pc3 <- pc33[which(geno[,i] != 0)]
-    pc4 <- pc44[which(geno[,i] != 0)]
 
-  if ( length(geno[,i]) == 1 ) { next }
-
-    for (k in 1:length(unique(geno[,i]))){
-       if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
-    }
-    if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-
-    phn <- pheno$Seed.length[which(geno[,i] != 0)]
-    res <- lm(phn ~ 1 + as.factor(geno[which(geno[,i] != 0),i]) + pc1 + pc2 + pc3 + pc4)
-
-    pc111[i] <- summary(res)[[4]][3,1]
-    pc222[i] <- summary(res)[[4]][4,1]
-    pc333[i] <- summary(res)[[4]][5,1]
-    pc444[i] <- summary(res)[[4]][6,1]
-
-    adj.phn <- phn - summary(res)[[4]][3,1]*pc1 - summary(res)[[4]][4,1]*pc2 - summary(res)[[4]][5,1]*pc3 - summary(res)[[4]][6,1]*pc4     
-    corr[i] <- cor(phn[which(is.na(phn) == F)],adj.phn[which(is.na(phn) == F)])
-  }
-  
 #### Figure 3
 #### Figure 3A 
 
