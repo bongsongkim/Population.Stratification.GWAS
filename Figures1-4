@@ -34,14 +34,13 @@
       if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
 
       res <- lm(phn ~ 1 + pheno$Rep + geno[,i] + pheno$PC1 + pheno$PC2 + pheno$PC3 )
-
-      pc11[i] <- summary(res)[[4]][4,1]
-      pc22[i] <- summary(res)[[4]][5,1]
-      pc33[i] <- summary(res)[[4]][6,1]
-
-      adj.phn <- phn - pc11[i]*pc1 - pc22[i]*pc2 - pc33[i]*pc3
-      
       cnt <- cnt + 1
+
+      pc11[cnt] <- summary(res)[[4]][4,1]
+      pc22[cnt] <- summary(res)[[4]][5,1]
+      pc33[cnt] <- summary(res)[[4]][6,1]
+
+      adj.phn <- phn - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
       corr[cnt] <- cor(phn, adj.phn)
   }
   
