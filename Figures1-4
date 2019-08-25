@@ -13,21 +13,19 @@
   geno <- rbind(geno1,geno2,geno3,geno4)
   geno <- t(geno)
 
-  pca  <- NULL
-  pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
+# pca  <- NULL
+# pca  <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
 
-  pca.lbl <- NULL
-  pca.lbl <- pca$NSFTV.ID
+# pca.lbl <- NULL
+# pca.lbl <- pca$NSFTV.ID
 
   pc11 <- NULL
   pc22 <- NULL
   pc33 <- NULL
-  pc44 <- NULL
   
   pc11 <- pca$PC1[match(pheno[,2],pca$NSFTV.ID)]
   pc22 <- pca$PC2[match(pheno[,2],pca$NSFTV.ID)]
   pc33 <- pca$PC3[match(pheno[,2],pca$NSFTV.ID)]
-  pc44 <- pca$PC4[match(pheno[,2],pca$NSFTV.ID)]
 
   pc111 <- NULL
   pc222 <- NULL
