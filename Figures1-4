@@ -76,7 +76,7 @@
       res <- lm(phn ~ 1 + pheno$Rep + geno[,i])
       p_val1[cnt] <- summary(res)[[4]][3,4]
   }
-  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = ???)",cex.main=1.4)
+  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.838)",cex.main=1.4)
 
 #### Figure 3B 
 
@@ -112,7 +112,7 @@
       res <- lm(phn ~ 1 + pheno$Rep + geno[,i] + pheno$PC1 + pheno$PC2 + pheno$PC3 )
       p_val2[cnt] <- summary(res)[[4]][3,4]
   }
-  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = ???)",cex.main=1.4)
+  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.454)",cex.main=1.4)
 
 
 #### Figure 3F
