@@ -89,7 +89,7 @@
   lambda <- median(chisq)/qchisq(0.5,1)
   newchisq <- chisq/lambda
   newpvalues1 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = ???)",cex.main=1.4)
+  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.000)",cex.main=1.4)
 
 #### Figure 3D 
 
@@ -126,7 +126,7 @@
   lambda <- median(chisq)/qchisq(0.5,1)
   newchisq <- chisq/lambda
   newpvalues2 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = ???)",cex.main=1.4)
+  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
 
 #### Figure 3H 
  
