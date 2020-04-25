@@ -57,29 +57,36 @@
 
   y <- phe$SHL
   for (i in 1:dim(snp)[2]){
-      res <- lm(y ~ snp[,i] + pc1 + pc2 + pc3 + as.factor(env) - 1)
+#      res <- lm(y ~ snp[,i] + pc1 + pc2 + pc3 + as.factor(env) - 1)
 
       cnt <- cnt + 1
-      pc11[cnt] <- summary(res)[[4]][2,4]
-      pc22[cnt] <- summary(res)[[4]][3,4]
-      pc33[cnt] <- summary(res)[[4]][4,4]
-      env11[cnt] <- summary(res)[[4]][5,4]
-      env22[cnt] <- summary(res)[[4]][6,4]
-      env33[cnt] <- summary(res)[[4]][7,4]
-      
-   adj.phe <- y - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3 - model.matrix(~as.factor(env) - 1) %*%  as.matrix(summary(res)[[4]][5:7,1])
+#      pc11[cnt] <- summary(res)[[4]][2,1]
+#      pc22[cnt] <- summary(res)[[4]][3,1]
+#      pc33[cnt] <- summary(res)[[4]][4,1]
 
-   corr[cnt] <- cor(y,adj.phe)
+#      env11[cnt] <- summary(res)[[4]][5,1]
+#      env22[cnt] <- summary(res)[[4]][6,1]
+#      env33[cnt] <- summary(res)[[4]][7,1]
+#      adj.phe <- y - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3 - model.matrix(~as.factor(env) - 1) %*%  as.matrix(summary(res)[[4]][5:7,1])
+
+      res <- lm(y ~ snp[,i] + as.factor(env) - 1)
+
+      env11[cnt] <- summary(res)[[4]][2,1]
+      env22[cnt] <- summary(res)[[4]][3,1]
+      env33[cnt] <- summary(res)[[4]][4,1]
+      
+      adj.phe <- y - model.matrix(~as.factor(env) - 1) %*%  as.matrix(summary(res)[[4]][2:4,1])
+      corr[cnt] <- cor(y,adj.phe)
   }
+  
+  
+  
   
   par(mfrow=c(3,1))
   par(mar=c(4,4,2,1))   
   plot(pc11,type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
   plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
   plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
-
-
-  model.matrix(as.factor(env))
 
 
 
