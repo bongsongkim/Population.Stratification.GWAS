@@ -71,7 +71,6 @@
   
 #######################################################################################
 
-
 #### Figure 1
 
   par(mfrow=c(3,1))
@@ -84,79 +83,56 @@
   plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
 
 #### Figure 3
-#### Figure 3A 
+  par(mfrow=c(2,1))
 
-  phn    <- NULL
+#### Figure 3A 
+  y    <- phe$Protein.content
   p_val1 <- NULL  
   cnt    <- 0
-  for (i in 1:dim(geno)[2]){
-    for (k in 1:length(unique(geno[,i]))){
-      if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
-    }
-    if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-      
+  for (i in 1:dim(snp)[2]){
       cnt <- cnt + 1
-      phn <- pheno$SHL
-      res <- lm(phn ~ 1 + pheno$Rep + geno[,i])
-      p_val1[cnt] <- summary(res)[[4]][3,4]
+      res <- lm(as.numeric(y) ~ 1 + as.factor(snp[,i]))
+      p_val1[cnt] <- summary(res)[[4]][2,4]
   }
-  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.838)",cex.main=1.4)
 
-#### Figure 3B 
-
-  qq(p_val1)
-   
-#### Figure 3C 
-
-  pvalues <- p_val1
-  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
-  lambda <- median(chisq)/qchisq(0.5,1)
-  newchisq <- chisq/lambda
-  newpvalues1 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.000)",cex.main=1.4)
-
-#### Figure 3D 
-
-  qq(newpvalues1)
-
-
-#### Figure 3E
-
-  phn    <- NULL
+#### Figure 3B
+  y    <- phe$Protein.content
   p_val2 <- NULL  
   cnt    <- 0
-  for (i in 1:dim(geno)[2]){
-    for (k in 1:length(unique(geno[,i]))){
-      if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
-    }
-    if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
-      
+  for (i in 1:dim(snp)[2]){
       cnt <- cnt + 1
-      phn <- pheno$SHL
-      res <- lm(phn ~ 1 + pheno$Rep + geno[,i] + pheno$PC1 + pheno$PC2 + pheno$PC3 )
-      p_val2[cnt] <- summary(res)[[4]][3,4]
+      res <- lm(as.numeric(y) ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)
+      p_val2[cnt] <- summary(res)[[4]][2,4]
   }
-  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.454)",cex.main=1.4)
-
-
-#### Figure 3F
-
-  qq(p_val2)
-
-#### Figure 3G
-
-  pvalues <- p_val2
-  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
-  lambda <- median(chisq)/qchisq(0.5,1)
-  newchisq <- chisq/lambda
-  newpvalues2 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
-
-#### Figure 3H 
- 
-   qq(newpvalues2)
-
+  par(mfrow=c(2,1))
+  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e",cex.main=1.4)
+  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
 
 #### Figure 4
   plot(-log10(newpvalues1),-log10(newpvalues2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
+
+  
+
+#### Figure 3B 
+#  qq(p_val1)
+#### Figure 3C 
+#  pvalues <- p_val1
+#  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
+#  lambda <- median(chisq)/qchisq(0.5,1)
+#  newchisq <- chisq/lambda
+#  newpvalues1 <- pchisq(newchisq, df=1,lower.tail=FALSE)
+#  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.000)",cex.main=1.4)
+#### Figure 3D 
+#  qq(newpvalues1)
+#### Figure 3F
+#  qq(p_val2)
+#### Figure 3G
+#  pvalues <- p_val2
+#  chisq <- qchisq(pvalues,1,lower.tail=FALSE)
+#  lambda <- median(chisq)/qchisq(0.5,1)
+#  newchisq <- chisq/lambda
+#  newpvalues2 <- pchisq(newchisq, df=1,lower.tail=FALSE)
+#  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
+#### Figure 3H 
+#  qq(newpvalues2)
 
