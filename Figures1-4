@@ -10,39 +10,49 @@
   geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_2.csv"),header=F)
   geno <- cbind(geno1,geno2)
  
-  pc1  <- NULL
-  pc2  <- NULL
-  pc3  <- NULL
-  corr <- NULL
-  
-  pc1 <- pheno$PC1
-  pc2 <- pheno$PC2
-  pc3 <- pheno$PC3
- 
-  pc11 <- NULL
-  pc22 <- NULL
-  pc33 <- NULL
 
-  phn <- pheno$SHL
-  cnt <- 0
+ id1 <- snp[,1]
+   id2 <- phe$NSFTVID 
+   id3 <- pca$NSFTV.ID
+   
+   snp <- snp[match(id3,id1),]
+   phe <- phe[match(id3,id1),]
+   
+   snp <- snp[which(is.na(phe$Protein.content) == FALSE),]
+   phe <- phe[which(is.na(phe$Protein.content) == FALSE),]
+   pca <- pca[which(is.na(phe$Protein.content) == FALSE),]
 
-  for (i in 1:dim(geno)[2]){
-      for (k in 1:length(unique(geno[,i]))){
-         if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ break }
-      }
-      if (length(which(geno[,i] == unique(geno[,i])[k]))/length(geno[,i]) <0.05){ next }
+   vec <- NULL
+   cnt <- 0
+   for (i in 2:dim(snp)[2]){
+      tmp0 <- NULL
+      tmp1 <- NULL
+      tmp2 <- NULL
+      tmp0 <- length(which(snp[,i] == 0))/dim(snp)[1]
+      tmp1 <- length(which(snp[,i] == 1))/dim(snp)[1]
+      tmp2 <- length(which(snp[,i] == 2))/dim(snp)[1]
 
-      res <- lm(phn ~ 1 + pheno$Rep + geno[,i] + pheno$PC1 + pheno$PC2 + pheno$PC3 )
+      if (tmp0 != 0 && tmp0 < 0.2)
+         next
+
+      if (tmp1 != 0 && tmp1 < 0.2)
+         next
+      
+      if (tmp2 != 0 && tmp2 < 0.2)
+         next
+
       cnt <- cnt + 1
+      vec[cnt] <- i
+   }
+   snp <- snp[,vec]
 
-      pc11[cnt] <- summary(res)[[4]][4,1]
-      pc22[cnt] <- summary(res)[[4]][5,1]
-      pc33[cnt] <- summary(res)[[4]][6,1]
 
-      adj.phn <- phn - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
-      corr[cnt] <- cor(phn, adj.phn)
-  }
-  
+
+
+
+#######################################################################################
+
+
 #### Figure 1
 
   par(mfrow=c(3,1))
