@@ -1,14 +1,30 @@
-  install.packages("qqman")
-  install.packages("RCurl")                  
+   install.packages("qqman")
+   install.packages("RCurl")                  
 
    library(qqman)
    require(RCurl)
- 
+
+   snp <- read.csv(text=getURL("http://bioinfo.noble.org/GWASPRO/static/demo/Maize_geno.csv"),row.names=1)   
+   snp <- t(snp)
+
+   phe <- read.csv(text=getURL("http://bioinfo.noble.org/GWASPRO/static/demo/Maize_pheno_pca.csv"),header=T)      
+   phe <- phe[-1 * which(phe$SHL < 5 | phe$SHL > 30),]
+   
+   id1 <- rownames(snp)
+   id2 <- phe$rs 
+
+   snp <- snp[match(id2,id1),]
+
+
+################
    phe <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
    pca   <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T) 
    geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_1.csv"),header=F)   
    geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_2.csv"),header=F)
    snp <- cbind(geno1,geno2)
+ 
+ 
+   
  
    id1 <- snp[,1]
    id2 <- phe$NSFTVID 
