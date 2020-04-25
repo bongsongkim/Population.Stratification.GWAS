@@ -4,16 +4,12 @@
   library(qqman)
   require(RCurl)
  
-  pheno <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
+  phe <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
   pca   <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
   geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_1.csv"),header=F)   
   geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_2.csv"),header=F)
-  
-  geno <- rbind(geno1,geno2,geno3,geno4)
-  geno <- t(geno)
+  geno <- cbind(geno1,geno2)
  
-  geno <- rbind(geno,geno,geno)
-
   pc1  <- NULL
   pc2  <- NULL
   pc3  <- NULL
