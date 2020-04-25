@@ -69,16 +69,6 @@
       corr[cnt] <- cor(phe$Protein.content,adj.phe)
   }
   
-  par(mfrow = c(3,1))
-  plot(pc11,type="l")
-  plot(pc22,type="l")
-  plot(pc33,type="l")
-  
-
-  plot(corr,type="l")
-
-
-
 #######################################################################################
 
 
