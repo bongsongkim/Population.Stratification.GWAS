@@ -90,7 +90,6 @@
 #### Figure 3A 
   y    <- phe$Protein.content
 
-#  y    <- phe$Plant.height
   p_val1 <- NULL  
   cnt    <- 0
   for (i in 1:dim(snp)[2]){
@@ -102,7 +101,6 @@
 #### Figure 3B
   y    <- phe$Protein.content
 
-#  y    <- phe$Plant.height
   p_val2 <- NULL  
   cnt    <- 0
   for (i in 1:dim(snp)[2]){
