@@ -4,11 +4,10 @@
   library(qqman)
   require(RCurl)
  
-  pheno <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/Maize_pheno_pca.csv"),header=T)
-  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/Maize_geno_1.csv"),row.names=1)   
-  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/Maize_geno_2.csv"),row.names=1)
-  geno3 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/Maize_geno_3.csv"),row.names=1)
-  geno4 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/Maize_geno_4.csv"),row.names=1)
+  pca <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
+  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_genotype1.csv"),row.names=1)   
+  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_genotype2.csv"),row.names=1)
+  geno3 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_genotype3.csv"),row.names=1)
 
   geno <- rbind(geno1,geno2,geno3,geno4)
   geno <- t(geno)
