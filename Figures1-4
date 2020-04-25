@@ -17,9 +17,14 @@
    snp <- snp[match(id3,id1),]
    phe <- phe[match(id3,id1),]
    
-   snp <- snp[which(is.na(phe$Protein.content) == FALSE),]
-   phe <- phe[which(is.na(phe$Protein.content) == FALSE),]
-   pca <- pca[which(is.na(phe$Protein.content) == FALSE),]
+#   snp <- snp[which(is.na(phe$Protein.content) == FALSE),]
+#   phe <- phe[which(is.na(phe$Protein.content) == FALSE),]
+#   pca <- pca[which(is.na(phe$Protein.content) == FALSE),]
+
+   snp <- snp[which(is.na(phe$Plant.height) == FALSE),]
+   phe <- phe[which(is.na(phe$Plant.height) == FALSE),]
+   pca <- pca[which(is.na(phe$Plant.height) == FALSE),]
+
 
    vec <- NULL
    cnt <- 0
@@ -58,15 +63,20 @@
   corr <- NULL
 
   for (i in 2:dim(snp)[2]){
-      res <- lm(phe$Protein.content ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3 )
+#      res <- lm(phe$Protein.content ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)
+
+      res <- lm(phe$Plant.height ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)     
       cnt <- cnt + 1
 
       pc11[cnt] <- summary(res)[[4]][3,4]
       pc22[cnt] <- summary(res)[[4]][4,4]
       pc33[cnt] <- summary(res)[[4]][5,4]
 
-      adj.phe <- phe$Protein.content - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
-      corr[cnt] <- cor(phe$Protein.content,adj.phe)
+#     adj.phe <- phe$Protein.content - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
+#     corr[cnt] <- cor(phe$Protein.content,adj.phe)
+
+      adj.phe <- phe$Plant.height - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
+      corr[cnt] <- cor(phe$Plant.height,adj.phe)
   }
   
 #######################################################################################
@@ -86,7 +96,9 @@
   par(mfrow=c(2,1))
 
 #### Figure 3A 
-  y    <- phe$Protein.content
+#  y    <- phe$Protein.content
+
+  y    <- phe$Plant.height
   p_val1 <- NULL  
   cnt    <- 0
   for (i in 1:dim(snp)[2]){
@@ -96,7 +108,9 @@
   }
 
 #### Figure 3B
-  y    <- phe$Protein.content
+#  y    <- phe$Protein.content
+
+  y    <- phe$Plant.height
   p_val2 <- NULL  
   cnt    <- 0
   for (i in 1:dim(snp)[2]){
@@ -109,7 +123,7 @@
   plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
 
 #### Figure 4
-  plot(-log10(newpvalues1),-log10(newpvalues2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
+  plot(-log10(p_val1),-log10(p_val2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
 
   
 
