@@ -1,17 +1,16 @@
   install.packages("qqman")
   install.packages("RCurl")                  
 
-  library(qqman)
-  require(RCurl)
+   library(qqman)
+   require(RCurl)
  
-  phe <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
-  pca   <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T)
-  geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_1.csv"),header=F)   
-  geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_2.csv"),header=F)
-  geno <- cbind(geno1,geno2)
+   phe <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_phenotype.csv"),header=T)
+   pca   <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/pca.csv"),header=T) 
+   geno1 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_1.csv"),header=F)   
+   geno2 <- read.csv(text=getURL("https://raw.githubusercontent.com/bongsongkim/Population.Structure.GWAS/master/Data/rice_geno_2.csv"),header=F)
+   geno <- cbind(geno1,geno2)
  
-
- id1 <- snp[,1]
+   id1 <- snp[,1]
    id2 <- phe$NSFTVID 
    id3 <- pca$NSFTV.ID
    
