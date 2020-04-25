@@ -7,13 +7,82 @@
    snp <- read.csv(text=getURL("http://bioinfo.noble.org/GWASPRO/static/demo/Maize_geno.csv"),row.names=1)   
    snp <- t(snp)
 
-   phe <- read.csv(text=getURL("http://bioinfo.noble.org/GWASPRO/static/demo/Maize_pheno_pca.csv"),header=T)      
-   phe <- phe[-1 * which(phe$SHL < 5 | phe$SHL > 30),]
-   
-   id1 <- rownames(snp)
-   id2 <- phe$rs 
+   vec <- NULL
+   cnt <- 0
+   for (i in 1:dim(snp)[2]){
+      tmp0 <- NULL
+      tmp1 <- NULL
+      tmp2 <- NULL
+      tmp0 <- length(which(snp[,i] == 0))/dim(snp)[1]
+      tmp1 <- length(which(snp[,i] == 1))/dim(snp)[1]
+      tmp2 <- length(which(snp[,i] == 2))/dim(snp)[1]
 
-   snp <- snp[match(id2,id1),]
+      if (tmp0 != 0 && tmp0 < 0.05)
+         next
+
+      if (tmp1 != 0 && tmp1 < 0.05)
+         next
+      
+      if (tmp2 != 0 && tmp2 < 0.05)
+         next
+
+      cnt <- cnt + 1
+      vec[cnt] <- i
+   }
+   snp <- snp[,vec]
+
+  phe <- read.csv(text=getURL("http://bioinfo.noble.org/GWASPRO/static/demo/Maize_pheno_pca.csv"),header=T)      
+  phe <- phe[-1 * which(phe$SHL < 5 | phe$SHL > 30),]
+   
+  id1 <- rownames(snp)
+  id2 <- phe$rs 
+
+  snp <- snp[match(id2,id1),]
+
+  pc1 <- phe$PC1
+  pc2 <- phe$PC2
+  pc3 <- phe$PC3
+  env <- phe$Rep
+
+  adj.phe <- NULL  
+  pc11    <- NULL
+  pc22    <- NULL
+  pc33    <- NULL
+  env11   <- NULL
+  env22   <- NULL
+  env33   <- NULL
+   
+  cnt  <- 0
+  corr <- NULL
+
+  y <- phe$SHL
+  for (i in 1:dim(snp)[2]){
+      res <- lm(y ~ snp[,i] + pc1 + pc2 + pc3 + as.factor(env) - 1)
+
+      cnt <- cnt + 1
+      pc11[cnt] <- summary(res)[[4]][2,4]
+      pc22[cnt] <- summary(res)[[4]][3,4]
+      pc33[cnt] <- summary(res)[[4]][4,4]
+      env11[cnt] <- summary(res)[[4]][5,4]
+      env22[cnt] <- summary(res)[[4]][6,4]
+      env33[cnt] <- summary(res)[[4]][7,4]
+      
+   adj.phe <- y - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3 - model.matrix(~as.factor(env) - 1) %*%  as.matrix(summary(res)[[4]][5:7,1])
+
+   corr[cnt] <- cor(y,adj.phe)
+  }
+  
+  par(mfrow=c(3,1))
+  par(mar=c(4,4,2,1))   
+  plot(pc11,type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
+  plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
+  plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
+
+
+  model.matrix(as.factor(env))
+
+
+
 
 
 ################
