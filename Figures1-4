@@ -45,7 +45,37 @@
    }
    snp <- snp[,vec]
 
+  pc1 <- pca$PC1
+  pc2 <- pca$PC2
+  pc3 <- pca$PC3
 
+  adj.phe <- NULL  
+  pc11 <- NULL
+  pc22 <- NULL
+  pc33 <- NULL
+
+  cnt  <- 0
+  corr <- NULL
+
+  for (i in 2:dim(snp)[2]){
+      res <- lm(phe$Protein.content ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3 )
+      cnt <- cnt + 1
+
+      pc11[cnt] <- summary(res)[[4]][3,4]
+      pc22[cnt] <- summary(res)[[4]][4,4]
+      pc33[cnt] <- summary(res)[[4]][5,4]
+
+      adj.phe <- phe$Protein.content - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
+      corr[cnt] <- cor(phe$Protein.content,adj.phe)
+  }
+  
+  par(mfrow = c(3,1))
+  plot(pc11,type="l")
+  plot(pc22,type="l")
+  plot(pc33,type="l")
+  
+
+  plot(corr,type="l")
 
 
 
