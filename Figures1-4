@@ -86,7 +86,6 @@
 
 
 #### Figure 3
-  par(mfrow=c(2,2))
 
 #### Figure 3A 
   y    <- phe$Seed.number.per.panicle
@@ -100,8 +99,6 @@
   }
 
 #### Figure 3B 
-  qq(p_val1)
-  
   pvalues <- p_val1
   chisq <- qchisq(pvalues,1,lower.tail=FALSE)
   lambda1 <- median(chisq)/qchisq(0.5,1)
@@ -117,13 +114,10 @@
       p_val2[cnt] <- summary(res)[[4]][2,4]
   }
   
-#### Figure 3D 
-  qq(p_val2)
-  
+#### Figure 3D  
   pvalues <- p_val2
   chisq <- qchisq(pvalues,1,lower.tail=FALSE)
   lambda2 <- median(chisq)/qchisq(0.5,1)
-
 
   par(mfrow=c(2,2))
   plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e",cex.main=1.4)
@@ -131,6 +125,5 @@
   plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
   qq(p_val2,main = "λ_GC = 3.79")
 
-
 #### Figure 4
-  plot(-log10(p_val1),-log10(p_val2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
+  plot(-log10(p_val1),-log10(p_val2),ylab="-log10(P) for Figure 3A",xlab="-log10(P) for Figure 3B")
