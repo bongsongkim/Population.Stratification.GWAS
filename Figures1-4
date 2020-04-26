@@ -19,9 +19,9 @@
    snp <- snp[match(id3,id1),]
    phe <- phe[match(id3,id1),]
    
-   snp <- snp[which(is.na(phe$Protein.content) == FALSE),]
-   phe <- phe[which(is.na(phe$Protein.content) == FALSE),]
-   pca <- pca[which(is.na(phe$Protein.content) == FALSE),]
+   snp <- snp[which(is.na(phe$Seed.number.per.panicle) == FALSE),]
+   phe <- phe[which(is.na(phe$Seed.number.per.panicle) == FALSE),]
+   pca <- pca[which(is.na(phe$Seed.number.per.panicle) == FALSE),]
 
    vec <- NULL
    cnt <- 0
@@ -60,7 +60,7 @@
   corr <- NULL
 
   for (i in 2:dim(snp)[2]){
-      res <- lm(phe$Protein.content ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)
+      res <- lm(phe$Seed.number.per.panicle ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)
 
       cnt <- cnt + 1
 
@@ -68,27 +68,28 @@
       pc22[cnt] <- summary(res)[[4]][4,4]
       pc33[cnt] <- summary(res)[[4]][5,4]
 
-     adj.phe <- phe$Protein.content - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
-     corr[cnt] <- cor(phe$Protein.content,adj.phe)
+     adj.phe <- phe$Seed.number.per.panicle - pc11[cnt]*pc1 - pc22[cnt]*pc2 - pc33[cnt]*pc3           
+     corr[cnt] <- cor(phe$Seed.number.per.panicle,adj.phe)
   }
   
 
 #### Figure 1
-
   par(mfrow=c(3,1))
   par(mar=c(4,4,2,1))   
   plot(pc11,type="l",xlab="",ylab="Coefficient for PCA1",main="Estimated coefficients for PCA1 variable")
   plot(pc22,type="l",xlab="",ylab="Coefficient for PCA2",main="Estimated coefficients for PCA2 variable")
   plot(pc33,type="l",xlab="",ylab="Coefficient for PCA3",main="Estimated coefficients for PCA3 variable")
 
+
 #### Figure 2
   plot(corr,pch=20,xlab="",ylab="Correlation between phenotype and adjusted phenotype",cex.lab=1.0,main="Variation among adjusted phenotypes resulting across all SNPs",cex.main=1.4,type="l")
+
 
 #### Figure 3
   par(mfrow=c(2,1))
 
 #### Figure 3A 
-  y    <- phe$Protein.content
+  y    <- phe$Seed.number.per.panicle
 
   p_val1 <- NULL  
   cnt    <- 0
@@ -98,8 +99,11 @@
       p_val1[cnt] <- summary(res)[[4]][2,4]
   }
 
-#### Figure 3B
-  y    <- phe$Protein.content
+#### Figure 3B 
+  qq(p_val1)
+
+#### Figure 3C
+  y    <- phe$Seed.number.per.panicle
 
   p_val2 <- NULL  
   cnt    <- 0
@@ -112,7 +116,9 @@
   plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e",cex.main=1.4)
   plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
 
+#### Figure 3D 
+  qq(p_val2)
+  
+
 #### Figure 4
   plot(-log10(p_val1),-log10(p_val2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
-
-  
