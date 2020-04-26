@@ -104,11 +104,8 @@
   
   pvalues <- p_val1
   chisq <- qchisq(pvalues,1,lower.tail=FALSE)
-  lambda <- median(chisq)/qchisq(0.5,1)
-  newchisq <- chisq/lambda
-  newpvalues1 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e (Genomic inflation factor = 1.000)",cex.main=1.4)
-  
+  lambda1 <- median(chisq)/qchisq(0.5,1)
+
 #### Figure 3C
   y    <- phe$Seed.number.per.panicle
 
@@ -119,19 +116,23 @@
       res <- lm(as.numeric(y) ~ 1 + as.factor(snp[,i]) + pc1 + pc2 + pc3)
       p_val2[cnt] <- summary(res)[[4]][2,4]
   }
-  par(mfrow=c(2,1))
-  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e",cex.main=1.4)
-  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
 
+  par(mfrow=c(2,2))
+  plot(-log10(p_val1),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + e",cex.main=1.4)
+  qq(p_val1,main = "λ_GC = 3.31")
+  plot(-log10(p_val2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e",cex.main=1.4)
+  qq(p_val2,main = "λ_GC = 3.79")
+  
+  
 #### Figure 3D 
   qq(p_val2)
   
   pvalues <- p_val2
   chisq <- qchisq(pvalues,1,lower.tail=FALSE)
-  lambda <- median(chisq)/qchisq(0.5,1)
-  newchisq <- chisq/lambda
-  newpvalues2 <- pchisq(newchisq, df=1,lower.tail=FALSE)
-  plot(-log10(newpvalues2),pch=20,xlab="",ylab="-log10(P)",cex.lab=1.2,main="y = µ + SNP + PCA1 + PCA2 + PCA3 + e (Genomic inflation factor = 1.000)",cex.main=1.4)
+  lambda2 <- median(chisq)/qchisq(0.5,1)
+
+
+
 
 #### Figure 4
   plot(-log10(p_val1),-log10(p_val2),ylab="-log10(P) for Figure 3C",xlab="-log10(P) for Figure 3G")
